@@ -1,0 +1,150 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>Trắc nghiệm Đấu Thầu 340 câu</title>
+    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+</head>
+<body>
+
+    <div id="setup-modal" class="modal-overlay">
+        <div class="modal-content">
+            <div class="modal-header">
+                <i class="fa-solid fa-gear"></i> Cài đặt bài thi
+            </div>
+            <div class="modal-body">
+                <div class="setting-item">
+                    <label>Đảo câu hỏi</label>
+                    <label class="switch">
+                        <input type="checkbox" id="toggle-shuffle-q">
+                        <span class="slider round"></span>
+                    </label>
+                </div>
+                <div class="setting-item">
+                    <label>Đảo đáp án</label>
+                    <label class="switch">
+                        <input type="checkbox" id="toggle-shuffle-a">
+                        <span class="slider round"></span>
+                    </label>
+                </div>
+                <div class="setting-item">
+                    <label>Hiện đáp án ngay</label>
+                    <label class="switch">
+                        <input type="checkbox" id="toggle-show-result" checked>
+                        <span class="slider round"></span>
+                    </label>
+                </div>
+                <div class="setting-item">
+                    <label>Giới hạn phút</label>
+                    <div class="input-toggle-group">
+                        <input type="number" id="input-time-limit" class="input-number" placeholder="0" disabled>
+                        <label class="switch">
+                            <input type="checkbox" id="toggle-time-limit" onchange="toggleInput('toggle-time-limit', 'input-time-limit')">
+                            <span class="slider round"></span>
+                        </label>
+                    </div>
+                </div>
+                <div class="setting-item">
+                    <label>Số lượng câu</label>
+                    <div class="input-toggle-group">
+                        <input type="number" id="input-question-limit" class="input-number" placeholder="All" disabled>
+                        <label class="switch">
+                            <input type="checkbox" id="toggle-question-limit" onchange="toggleInput('toggle-question-limit', 'input-question-limit')">
+                            <span class="slider round"></span>
+                        </label>
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button class="btn-skip" onclick="startQuiz(false)">Mặc định</button>
+                <button class="btn-start" onclick="startQuiz(true)">Bắt đầu</button>
+            </div>
+        </div>
+    </div>
+
+    <div id="result-modal" class="modal-overlay" style="display: none;">
+        <div class="modal-content result-content">
+            <div class="trophy-container">
+                <div class="trophy-circle">
+                    <i class="fa-solid fa-trophy"></i>
+                </div>
+            </div>
+            
+            <h2 class="result-message" id="result-message">Tuyệt vời!</h2>
+            
+            <div class="big-score-container">
+                <div class="score-value" id="score-text">0/0</div>
+                <div class="score-subtitle">Câu trả lời đúng</div>
+            </div>
+
+            <div class="stats-grid">
+                <div class="stat-box">
+                    <i class="fa-regular fa-clock"></i>
+                    <span id="result-time">00:00</span>
+                    <small>Thời gian</small>
+                </div>
+                <div class="stat-box">
+                    <i class="fa-solid fa-chart-pie"></i>
+                    <span id="result-percent">0%</span>
+                    <small>Chính xác</small>
+                </div>
+            </div>
+
+            <div class="result-actions">
+                <button class="btn-review" onclick="reviewQuiz()">
+                    <i class="fa-solid fa-eye"></i> Xem lại bài
+                </button>
+                <button class="btn-restart" onclick="location.reload()">
+                    <i class="fa-solid fa-rotate-right"></i> Làm lại
+                </button>
+            </div>
+        </div>
+    </div>
+    <header class="header">
+        <div class="header-left">
+            <button class="menu-btn" onclick="toggleSidebar()">
+                <i class="fa-solid fa-bars"></i>
+            </button>
+            <div class="logo">Trắc nghiệm Online</div>
+        </div>
+        
+        <div class="header-right">
+            <div class="timer" id="timer">00:00</div>
+            <button class="btn-submit-header" onclick="finishQuizConfirmation()">
+                <i class="fa-solid fa-check"></i> Nộp
+            </button>
+        </div>
+    </header>
+
+    <div class="container">
+        <div class="sidebar-overlay" id="sidebar-overlay" onclick="toggleSidebar()"></div>
+
+        <aside class="sidebar" id="sidebar">
+            <div class="sidebar-header">
+                Danh sách câu hỏi
+                <button class="close-sidebar" onclick="toggleSidebar()"><i class="fa-solid fa-times"></i></button>
+            </div>
+            <div class="question-list" id="question-list"></div>
+        </aside>
+
+        <main class="main-content">
+            <div class="question-card">
+                <div class="question-header">
+                    <h3 id="question-text">Đang tải...</h3>
+                </div>
+                <div class="answers" id="answers-container"></div>
+            </div>
+            <div style="height: 60px;"></div> 
+        </main>
+    </div>
+
+    <div class="bottom-nav">
+        <button id="btn-prev" onclick="changeQuestion(-1)"><i class="fa-solid fa-chevron-left"></i> Trước</button>
+        <button id="btn-next" onclick="handleNextButton()">Sau <i class="fa-solid fa-chevron-right"></i></button>
+    </div>
+
+    <script src="script.js"></script>
+</body>
+</html>
