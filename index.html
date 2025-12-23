@@ -15,6 +15,14 @@
                 <i class="fa-solid fa-gear"></i> Cài đặt bài thi
             </div>
             <div class="modal-body">
+                
+                <div class="setting-item">
+                    <label>Chọn phần học</label>
+                    <select id="select-part" class="input-select">
+                        <option value="all">Đang tải...</option>
+                    </select>
+                </div>
+
                 <div class="setting-item">
                     <label>Đảo câu hỏi</label>
                     <label class="switch">
@@ -96,12 +104,13 @@
                 <button class="btn-review" onclick="reviewQuiz()">
                     <i class="fa-solid fa-eye"></i> Xem lại bài
                 </button>
-                <button class="btn-restart" onclick="location.reload()">
+                <button class="btn-restart" onclick="returnToSetup()">
                     <i class="fa-solid fa-rotate-right"></i> Làm lại
                 </button>
             </div>
         </div>
     </div>
+
     <header class="header">
         <div class="header-left">
             <button class="menu-btn" onclick="toggleSidebar()">
