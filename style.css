@@ -14,7 +14,7 @@ body {
     padding: 0 10px; box-shadow: 0 2px 5px rgba(0,0,0,0.1); z-index: 50;
     flex-shrink: 0;
 }
-.header-left, .header-right { display: flex; align-items: center; gap: 10px; }
+.header-left, .header-right { display: flex; align-items: center; gap: 8px; }
 .logo { font-size: 1.1rem; font-weight: bold; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
 .timer { font-family: monospace; font-size: 1.1rem; background: rgba(0,0,0,0.2); padding: 5px 8px; border-radius: 5px; min-width: 60px; text-align: center;}
 .menu-btn { background: none; border: none; color: white; font-size: 1.4rem; cursor: pointer; padding: 5px; }
@@ -25,6 +25,16 @@ body {
     display: flex; align-items: center; gap: 5px; font-size: 0.9rem;
 }
 .btn-submit-header:hover { background-color: #2ecc71; }
+
+/* [MỚI] Nút làm lại trên Header */
+.btn-reset-header {
+    background-color: rgba(255, 255, 255, 0.15); /* Màu trong suốt nhẹ */
+    color: white; border: 1px solid rgba(255,255,255,0.2);
+    padding: 6px 12px; border-radius: 4px; font-weight: bold; cursor: pointer;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 1rem;
+}
+.btn-reset-header:hover { background-color: rgba(255, 255, 255, 0.3); }
 
 /* LAYOUT */
 .container { display: flex; flex: 1; position: relative; overflow: hidden; }
@@ -121,7 +131,7 @@ body {
 .input-toggle-group { display: flex; align-items: center; gap: 10px; }
 .input-number { width: 50px; padding: 5px; text-align: center; border: 1px solid #ccc; border-radius: 5px; }
 
-/* [MỚI] CSS cho dropdown chọn phần */
+/* CSS cho dropdown chọn phần */
 .input-select {
     padding: 8px 12px;
     border: 1px solid #ddd;
