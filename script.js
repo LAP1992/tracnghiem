@@ -11,26 +11,25 @@ let settings = {
 };
 let timerInterval;
 let isQuizFinished = false;
-const CHUNK_SIZE = 50; // Mỗi phần 50 câu
+const CHUNK_SIZE = 50; 
 
 // 1. Tải dữ liệu
 fetch('de1.json')
     .then(response => response.json())
     .then(data => {
         fullQuestionsData = data;
-        initPartSelector(); // [MỚI] Tạo danh sách phần học
+        initPartSelector();
     })
     .catch(error => {
         document.getElementById('question-text').innerText = "Lỗi tải dữ liệu. Vui lòng tải lại trang.";
         console.error('Lỗi:', error);
     });
 
-// [MỚI] Hàm tạo danh sách các phần (VD: 1-50, 51-100...)
+// Hàm tạo danh sách các phần
 function initPartSelector() {
     const select = document.getElementById('select-part');
     const total = fullQuestionsData.length;
     
-    // Reset và thêm lựa chọn 'Tất cả'
     select.innerHTML = '<option value="all">Tất cả (' + total + ' câu)</option>';
 
     let partCount = Math.ceil(total / CHUNK_SIZE);
@@ -40,7 +39,7 @@ function initPartSelector() {
         let end = Math.min((i + 1) * CHUNK_SIZE, total);
         
         let option = document.createElement('option');
-        option.value = i; // Giá trị là số thứ tự phần (0, 1, 2...)
+        option.value = i; 
         option.text = `Phần ${i + 1} (Câu ${start} - ${end})`;
         select.appendChild(option);
     }
@@ -62,7 +61,7 @@ function toggleInput(checkboxId, inputId) {
     if(isChecked) input.focus();
 }
 
-// 4. Bắt đầu bài thi (Đã thêm logic chọn phần)
+// 4. Bắt đầu bài thi
 function startQuiz(applySettings) {
     document.getElementById('setup-modal').style.display = 'none';
     
@@ -70,21 +69,19 @@ function startQuiz(applySettings) {
     isQuizFinished = false;
     currentQuestionIndex = 0;
     
-    // --- LOGIC MỚI: LỌC CÂU HỎI THEO PHẦN ---
+    // LOGIC LỌC CÂU HỎI
     if (applySettings) {
         const partIndex = document.getElementById('select-part').value;
         
         if (partIndex === "all") {
             currentQuestions = [...fullQuestionsData];
         } else {
-            // Cắt lấy 50 câu tương ứng
             const pIdx = parseInt(partIndex);
             const start = pIdx * CHUNK_SIZE;
             const end = Math.min((pIdx + 1) * CHUNK_SIZE, fullQuestionsData.length);
             currentQuestions = fullQuestionsData.slice(start, end);
         }
 
-        // Các cài đặt khác
         settings.shuffleQ = document.getElementById('toggle-shuffle-q').checked;
         settings.shuffleA = document.getElementById('toggle-shuffle-a').checked;
         settings.showInstant = document.getElementById('toggle-show-result').checked;
@@ -97,23 +94,18 @@ function startQuiz(applySettings) {
 
         if (document.getElementById('toggle-question-limit').checked) {
             let limit = parseInt(document.getElementById('input-question-limit').value) || 0;
-            // Nếu có giới hạn số câu, cắt tiếp từ danh sách hiện tại
             if (limit > 0 && limit < currentQuestions.length) {
-                // Nếu đảo câu hỏi thì đảo trước rồi mới cắt giới hạn
                 if (settings.shuffleQ) shuffleArray(currentQuestions);
                 currentQuestions = currentQuestions.slice(0, limit);
-                // Đã đảo rồi thì tắt cờ shuffle để không đảo lại lần nữa bên dưới
                 settings.shuffleQ = false; 
             }
         } else {
             settings.qLimit = 0;
         }
 
-        // Đảo câu hỏi (nếu chưa đảo ở bước limit trên)
         if (settings.shuffleQ) shuffleArray(currentQuestions);
         
     } else {
-        // Mặc định (Bỏ qua cài đặt) -> Lấy tất cả
         currentQuestions = [...fullQuestionsData];
         settings.timeLimit = 0;
         settings.shuffleQ = false;
@@ -139,7 +131,6 @@ function renderSidebar() {
     list.innerHTML = '';
     currentQuestions.forEach((q, index) => {
         const btn = document.createElement('button');
-        // Vẫn để số thứ tự là 1, 2, 3... cho dễ theo dõi trong bài thi
         btn.innerText = index + 1; 
         btn.className = 'q-btn';
         btn.id = `q-btn-${index}`;
@@ -157,8 +148,6 @@ function loadQuestion(index) {
     currentQuestionIndex = index;
 
     const question = currentQuestions[index];
-    
-    // Hiển thị tiêu đề: Câu X (ID gốc nếu cần)
     document.getElementById('question-text').innerText = `Câu ${index + 1}: ${question.question}`;
     
     const answersContainer = document.getElementById('answers-container');
@@ -321,6 +310,13 @@ function finishQuiz() {
 
 function reviewQuiz() {
     document.getElementById('result-modal').style.display = 'none';
+}
+
+// [MỚI] Hàm xử lý nút Làm lại trên Header
+function confirmRestart() {
+    if(confirm("Bạn có chắc muốn quay về màn hình cài đặt để làm bài mới không?")) {
+        returnToSetup();
+    }
 }
 
 function returnToSetup() {
